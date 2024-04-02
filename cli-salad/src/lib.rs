@@ -1,7 +1,10 @@
+use core::panic;
+
 use rand::seq::SliceRandom;
 use rand::thread_rng;
 
 pub fn create_fruit_salad(num_fruits: usize) -> Vec<String> {
+    
     let fruits = vec![
         "Arbutus".to_string(),
         "Loquat".to_string(),
@@ -15,6 +18,10 @@ pub fn create_fruit_salad(num_fruits: usize) -> Vec<String> {
         "Apple".to_string(),
     ];
 
+    if num_fruits >= fruits.len() {
+        panic!("The number of fruits requested exceeds the number of fruits available.");
+    }
+    
     let mut rng = thread_rng();
     let mut fruits = fruits;
     fruits.shuffle(&mut rng);

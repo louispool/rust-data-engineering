@@ -12,14 +12,16 @@ fn main() {
 
     // Iterate over the data to populate the graph
     for window in TWITTER_USERNAMES.windows(2) {
+
         let user = window[0];
         let mention = window[1];
 
         // Add the nodes to the graph and to the HashMap
-        let user_node = *nodes.entry(user).or_insert_with(|| graph.add_node(user));
-        let mention_node = *nodes
-            .entry(mention)
-            .or_insert_with(|| graph.add_node(mention));
+        let user_node = *nodes.entry(user)
+                                         .or_insert_with(|| graph.add_node(user));
+        
+        let mention_node = *nodes.entry(mention)
+                                            .or_insert_with(|| graph.add_node(mention));
 
         // Add the edge to the graph
         graph.add_edge(user_node, mention_node, "retweets");
@@ -27,7 +29,7 @@ fn main() {
 
     // Use the Kosaraju's algorithm to detect strongly connected components
     let scc = kosaraju_scc(&graph);
-    for component in scc {
+    for component in scc.iter() {
         println!("{} nodes in community discovered", component.len());
         let usernames: Vec<&str> = component
             .iter()
@@ -35,4 +37,18 @@ fn main() {
             .collect();
         println!("{:?}", usernames);
     }
+
+    //Find and print the largest community
+    let largest_community = scc.iter().max_by_key(|component| component.len());
+    if let Some(community) = largest_community {
+        println!("The largest community has {} nodes", community.len());
+        let usernames: Vec<&str> = community
+            .iter()
+            .map(|&node_index| graph[node_index])
+            .collect();
+        println!("{:?}", usernames);
+    } else {
+        println!("No community found");
+    }
+
 }

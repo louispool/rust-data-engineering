@@ -22,6 +22,11 @@ fn main() {
 
     let node_map = dijkstra(&graph, belem_tower, Some(lisbon_cathedral), |e| *e.weight());
 
+    //Print the map
+    for (node, distance) in &node_map {
+        println!("The shortest distance from Belem Tower to {} is {} km", graph[*node], distance);
+    }
+
     if let Some(distance) = node_map.get(&lisbon_cathedral) {
         println!(
             "The shortest distance from Belem Tower to Lisbon Cathedral is {} km",

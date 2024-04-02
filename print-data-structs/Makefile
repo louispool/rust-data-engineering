@@ -1,4 +1,4 @@
-format:
+akformat:
 	cargo fmt --quiet
 
 lint:
